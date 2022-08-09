@@ -20,6 +20,7 @@
     "generate:solana": "node index.js && node utils/metaplex.js",
     "generate:cardano": "node index.js && node utils/cardano.js",
     "generate:tezos": "node index.js && node utils/tezos.js",
+    "generate:chia": "node index.js && node utils/chia.js",
     "preview": "node utils/createPreviewCollage.js",
     "gif": "node utils/preview_gif.js",
     "update:metadata": "node utils/updateInfo.js",
