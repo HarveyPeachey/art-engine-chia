@@ -40,8 +40,8 @@ const background = {
 
 const layerConfigurations = [
   {
-    growEditionSizeTo: 100,
-    namePrefix: "Series 2", // Use to add a name to Metadata `name:`
+    growEditionSizeTo: 10,
+    namePrefix: "OutCats", // Use to add a name to Metadata `name:`
     layersOrder: [
       { name: "Background" },
       { name: "Eyes" },
