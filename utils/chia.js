@@ -6,31 +6,27 @@ const isLocal = typeof process.pkg === "undefined";
 const basePath = isLocal ? process.cwd() : path.dirname(process.execPath);
 const chalk = require("chalk");
 
-// const {
-//   NFTName,
-//   symbol,
-//   description,
-//   external_url,
-//   royaltyFee,
-//   creators,
-// } = require(path.join(basePath, "/Solana/solana_config.js"));
+const {
+  sensitive_content,
+  format,
+  collection,
+} = require(path.join(basePath, "/Chia/chia_config.js"));
 const { startIndex } = require(path.join(basePath, "/src/config.js"));
-const imagesDir = `${basePath}/build/images`;
+// const imagesDir = `${basePath}/build/images`;
 const jsonDir = `${basePath}/build/json`;
 
-const chipBuildPath = `${basePath}/build/chia`;
-const chipDir = `${basePath}/build/chia`;
+const chiaBuildPath = `${basePath}/build/chia`;
 
 // Deletes existing build path if exists and remakes folders
 const setup = () => {
-  if (fs.existsSync(chipBuildPath)) {
-    fs.rmSync(chipBuildPath, {
+  if (fs.existsSync(chiaBuildPath)) {
+    fs.rmSync(chiaBuildPath, {
       recursive: true,
     });
   }
-  fs.mkdirSync(chipBuildPath);
-  fs.mkdirSync(path.join(chipBuildPath, "/json"));
-  fs.mkdirSync(path.join(chipBuildPath, "/images"));
+  fs.mkdirSync(chiaBuildPath);
+  fs.mkdirSync(path.join(chiaBuildPath, "/json"));
+  fs.mkdirSync(path.join(chiaBuildPath, "/images"));
 };
 
 const getIndividualJsonFiles = () => {
@@ -41,9 +37,9 @@ const getIndividualJsonFiles = () => {
 
 // Setup
 setup();
-console.log(chalk.cyan.black("Beginning Tezos conversion"));
+console.log(chalk.cyan.black("Beginning Chia conversion"));
 console.log(
-  chalk.cyan(`\nExtracting files.\nWriting to folder: ${chipBuildPath}`)
+  chalk.cyan(`\nExtracting files.\nWriting to folder: ${chiaBuildPath}`)
 );
 
 // Identify json files
@@ -51,3 +47,30 @@ const jsonFiles = getIndividualJsonFiles();
 console.log(
   chalk.green(`Found ${jsonFiles.length} json files in "${jsonDir}" to process`)
 );
+
+// Iterate, open and put in metadata list
+jsonFiles.forEach((file) => {
+  let nameWithoutExtension = file.slice(0, -4);
+  let editionCountFromFileName = Number(nameWithoutExtension);
+  let newEditionCount = editionCountFromFileName - startIndex;
+
+  const rawData = fs.readFileSync(`${jsonDir}/${file}`);
+  const jsonData = JSON.parse(rawData);
+
+  let tempMetadata = {
+    name: jsonData.name,
+    description: jsonData.description,
+    attributes: jsonData.attributes,
+    sensitive_content,
+    format,
+    collection,
+  };
+  fs.writeFileSync(
+    path.join(`${chiaBuildPath}`, "json", `${newEditionCount}.json`),
+    JSON.stringify(tempMetadata, null, 2)
+  );
+});
+console.log(
+  `\nFinished converting json metadata files to being chia-ready.`
+);
+console.log(chalk.green(`\nConversion was finished successfully!\n`));
