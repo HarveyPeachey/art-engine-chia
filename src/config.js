@@ -40,22 +40,22 @@ const background = {
 
 const layerConfigurations = [
   {
-    growEditionSizeTo: 10,
+    growEditionSizeTo: 100,
     namePrefix: "Series 2", // Use to add a name to Metadata `name:`
     layersOrder: [
       { name: "Background" },
+      { name: "Eyes" },
       {
-        name: "Back Accessory",
+        name: "Body",
         // options: {
         //   bypassDNA: true,
         // },
       },
-      { name: "Head" },
-      { name: "Clothes" },
-      { name: "Eyes" },
-      { name: "Hair" },
-      { name: "Head Accessory" },
-      { name: "Shirt Accessories" },
+      { name: "Headwear" },
+      { name: "Face" },
+      { name: "Mouth" },
+      { name: "Neck" },
+      { name: "Item" },
     ],
   },
   // {
